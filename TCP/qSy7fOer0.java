@@ -40,8 +40,6 @@ class Laptop implements Serializable {
         this.name = name;
         this.quantity = quantity;
     }
-    
-    
 }
 
 

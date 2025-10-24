@@ -1,0 +1,486 @@
+package qUIhGHg45;
+
+import java.net.*;
+
+public class qUIhGHg45 {
+    public static void main(String[] args) throws Exception {
+        DatagramSocket socket = new DatagramSocket();
+        InetAddress addr = InetAddress.getByName("203.162.10.109");
+        
+        String req = ";B22DCCN222;UIhGHg45";
+        socket.send(new DatagramPacket(req.getBytes(), req.getBytes().length, addr, 2208));
+        
+        byte[] buf = new byte[1024];
+        DatagramPacket pk = new DatagramPacket(buf, buf.length);
+        socket.receive(pk);
+        String line = new String(pk.getData(), 0, pk.getLength());
+        
+        String[] parts = line.split(";", 2);
+        String requestId = parts[0];
+        String[] nums = parts[1].split(",", 2);
+        
+        int b1 = Integer.parseInt(nums[0], 2);
+        int b2 = Integer.parseInt(nums[1], 2);
+        
+        b1 += b2;
+        
+        String res = requestId + ";" + b1;
+        
+        socket.send(new DatagramPacket(res.getBytes(), res.getBytes().length, addr, 2208));
+        socket.close();
+    }
+}
+
+=============================================================================
+
+package q97L7WP1p;
+
+import java.net.*;
+
+public class q97L7WP1p {
+    public static void main(String[] args) throws Exception {
+        DatagramSocket socket = new DatagramSocket();
+        InetAddress addr = InetAddress.getByName("203.162.10.109");
+        int port = 2207;
+        
+        String msg = ";B22DCCN222;97L7WP1p";
+        socket.send(new DatagramPacket(msg.getBytes(), msg.getBytes().length, addr, port));
+        
+        byte[] buf = new byte[1024];
+        DatagramPacket pk = new DatagramPacket(buf, buf.length);
+        socket.receive(pk);
+        String line = new String(pk.getData(), 0, pk.getLength());
+               
+        String[] parts = line.split(";", 2);
+        String requestId = parts[0];
+        String[] nums = parts[1].split(",");
+        
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        
+        for (String s : nums) {
+            int v = Integer.parseInt(s);
+            if (v > max) max = v;
+            if (v < min) min = v;
+        }
+        
+        String res = requestId + ";" + max + "," + min;
+        socket.send(new  DatagramPacket(res.getBytes(), res.getBytes().length, addr, port));
+        socket.close();
+    }
+}
+
+
+=============================================================================
+
+package UDP;
+
+import java.io.*;
+import java.net.*;
+
+public class qm2GVBPdF {
+    public static void main(String[] args) throws Exception {
+        DatagramSocket socket = new DatagramSocket();
+        InetAddress addr = InetAddress.getByName("203.162.10.109");
+        int port = 2209;
+        
+        String msg = ";B22DCCN222;m2GVBPdF";
+        socket.send(new DatagramPacket(msg.getBytes(), msg.getBytes().length, addr, port));
+        
+        byte[] buf = new byte[1024];
+        DatagramPacket pk = new DatagramPacket(buf, buf.length);
+        socket.receive(pk);
+        byte[] data = pk.getData();
+        
+        String requestId = new String(data, 0, 8);
+        ByteArrayInputStream bais = new ByteArrayInputStream(data, 8, pk.getLength() - 8);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        Employee e = (Employee) ois.readObject();
+        ois.close();
+        
+        e.name = viethoa(e.name);
+        e.salary = tangluong(e.salary, e.hireDate);
+        e.hireDate = doingay(e.hireDate);
+        
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        baos.write(requestId.getBytes());
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(e);
+        oos.flush();
+        
+        byte[] res = baos.toByteArray();
+        socket.send(new DatagramPacket(res, res.length, addr, port));
+        socket.close();
+    }
+    
+    private static String viethoa(String name) {
+        String[] parts = name.trim().toLowerCase().split(" ");
+        StringBuilder sb = new StringBuilder();
+        for (String s : parts) {
+            sb.append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).append(" ");
+        }
+        return sb.toString().trim();
+    }
+    
+    private static double tangluong(double salary, String date) {
+        int sum = 0;
+        String year = date.substring(0, 4);
+        char[] nums = year.toCharArray();
+        for (char s : nums) {
+            sum += (s - '0');
+        }
+        return salary * (1 + sum / 100.0);
+    }
+    
+    private static String doingay(String date) {
+        String[] parts = date.split("-", 3);
+        return parts[2] + "/" + parts[1] + "/" + parts[0];
+    }
+}
+
+class Employee implements Serializable {
+    private static final long serialVersionUID = 20261107L;
+    String id, name, hireDate;
+    double salary;
+
+    public Employee(String id, String name, double salary, String hireDate) {
+        this.id = id;
+        this.name = name;
+        this.hireDate = hireDate;
+        this.salary = salary;
+    }
+}
+
+=============================================================================
+
+package qfHA06p8q;
+
+import java.io.*;
+import java.net.*;
+import java.util.*;
+public class qfHA06p8q {
+    public static void main(String[] args) throws Exception {
+        Socket socket = new Socket("203.162.10.109", 2208);
+        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        
+        out.write("B22DCCN222;fHA06p8q\n");
+        out.flush();
+        
+        String line = in.readLine();
+        
+        Map<Character, Integer> count = new LinkedHashMap<>();
+        for (char c : line.toCharArray()) {
+            if (Character.isLetterOrDigit(c)) count.put(c, count.getOrDefault(c, 0) + 1);
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        count.forEach((k, v) -> {
+            if (v > 1) {
+                sb.append(k).append(":").append(v).append(",");
+            }
+        });
+        
+        out.write(sb.toString());
+        out.flush();
+        socket.close();
+    }
+}
+
+
+=============================================================================
+
+package q6LFr5zys;
+
+import java.io.*;
+import java.net.*;
+
+public class q6LFr5zys {
+    public static void main(String[] args) throws Exception {
+        Socket socket = new Socket("203.162.10.109", 2206);
+        InputStream in = socket.getInputStream();
+        OutputStream out = socket.getOutputStream();
+        
+        out.write("B22DCCN222;6LFr5zys".getBytes());
+        out.flush();
+        
+        byte[] buf = new byte[1024];
+        int len = in.read(buf);
+        String line = new String(buf, 0, len);
+        
+        int sum = 0;
+        String[] nums = line.split("\\|");
+        for (String s : nums) {
+            sum += Integer.parseInt(s);
+        }
+        
+        out.write(String.valueOf(sum).getBytes());
+        out.flush();
+        socket.close();
+    }
+}
+
+
+=============================================================================
+
+package qx7KlSYHg;
+
+import java.net.*;
+import java.io.*;
+
+public class qx7KlSYHg {
+    public static void main(String[] args) throws Exception {
+        Socket socket= new Socket("203.162.10.109", 2207);
+        DataInputStream in = new DataInputStream(socket.getInputStream());
+        DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+        
+        out.writeUTF("B22DCCN222;x7KlSYHg");
+        
+        int n = in.readInt();
+        
+        String bin = Integer.toBinaryString(n);
+        
+        out.writeUTF(bin);
+        
+        socket.close();
+    }
+}
+
+
+=============================================================================
+
+package TCP;
+
+import java.net.*;
+import java.io.*;
+
+public class qSy7fOer0 {
+    public static void main(String[] args) throws Exception {
+        Socket socket = new Socket("203.162.10.109", 2209);
+        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+
+        out.writeObject("B22DCCN222;Sy7fOer0");
+
+        Laptop lap = (Laptop) in.readObject();
+
+        String[] w = lap.name.trim().split("\\s+");
+        if (w.length >= 2) {
+            String t = w[0]; w[0] = w[w.length - 1]; w[w.length - 1] = t;
+            lap.name = String.join(" ", w);
+        }
+
+        lap.quantity = Integer.parseInt(new StringBuilder(String.valueOf(lap.quantity)).reverse().toString());
+
+        out.writeObject(lap);
+        socket.close();
+    }
+}
+
+class Laptop implements Serializable {
+    private static final long serialVersionUID = 20150711;
+    
+    public int id;
+    public String code;
+    public String name;
+    public int quantity;
+
+    public Laptop(int id, String code, String name, int quantity) {
+        this.id = id;
+        this.code = code;
+        this.name = name;
+        this.quantity = quantity;
+    } 
+}
+
+=============================================================================
+
+package RMI;
+
+import java.rmi.*;
+import java.rmi.RemoteException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public class qutAoFqsX {
+    public static void main(String[] args) throws Exception {
+        CharacterService service = (CharacterService) Naming.lookup(
+            "rmi://203.162.10.109/RMICharacterService"
+        );
+
+        String input = service.requestCharacter("B22DCCN222", "utAoFqsX");
+        input = input.replace("\"", "").trim();
+
+        // Đếm tần số theo thứ tự xuất hiện
+        Map<Character, Integer> freq = new LinkedHashMap<>();
+        for (char c : input.toCharArray()) {
+            freq.put(c, freq.getOrDefault(c, 0) + 1);
+        }
+
+        StringBuilder result = new StringBuilder();
+        for (Map.Entry<Character, Integer> entry : freq.entrySet()) {
+            result.append(entry.getKey()).append(entry.getValue());
+        }
+
+        service.submitCharacter("B22DCCN222", "utAoFqsX", result.toString());
+        System.out.println("Done: " + result);
+    }
+}
+
+interface CharacterService extends Remote {
+    String requestCharacter(String studentCode, String qCode) throws RemoteException;
+    void submitCharacter(String studentCode, String qCode, String strSubmit) throws RemoteException;
+}
+
+
+=============================================================================
+
+package RMI;
+
+import java.rmi.*;
+import java.rmi.RemoteException;
+
+public class qafXtvZ0Z {
+    public static void main(String[] args) throws Exception {
+        ByteService service = (ByteService) Naming.lookup(
+            "rmi://203.162.10.109/RMIByteService"
+        );
+
+        byte[] data = service.requestData("B22DCCN222", "afXtvZ0Z");
+
+        byte[] key = "PTIT".getBytes();
+
+        byte[] encoded = new byte[data.length];
+        for (int i = 0; i < data.length; i++) {
+            encoded[i] = (byte) (data[i] ^ key[i % key.length]);
+        }
+
+        service.submitData("B22DCCN222", "afXtvZ0Z", encoded);
+
+        System.out.println("Done: XOR encoding applied.");
+    }
+}
+
+
+interface ByteService extends Remote {
+    byte[] requestData(String studentCode, String qCode) throws RemoteException;
+    void submitData(String studentCode, String qCode, byte[] data) throws RemoteException;
+}
+
+
+=============================================================================
+
+package RMI;
+
+import java.rmi.*;
+
+public class qafXtvZ0Z {
+    public static void main(String[] args) throws Exception {
+       ByteService service = (ByteService) Naming.lookup("rmi://203.162.10.109/RMIByteService");
+       
+       byte[] data = service.requestData("B22DCCN222", "afXtvz0z");
+       
+       byte[] key = "PTIT".getBytes();
+       
+       byte[] mahoa = new byte[data.length];
+       for (int i = 0; i < data.length; i++) {
+           mahoa[i] = (byte) (data[i] ^ key[i % key.length]);
+       }
+       
+       service.submitData("B22DCCN222", "afXtvz0z", mahoa);
+    }
+}
+
+interface ByteService extends Remote {
+    public byte[] requestData(String studentCode, String qCode) throws RemoteException;
+    public void submitData(String studentCode, String qCode, byte[] data) throws RemoteException;
+}
+
+=============================================================================
+
+package RMI;
+
+import java.rmi.*;
+import java.util.*;
+
+public class quucNOP2h {
+    public static void main(String[] args) throws Exception {
+        // Kết nối RMI Server
+        DataService service = (DataService) Naming.lookup(
+            "rmi://203.162.10.109/RMIDataService"
+        );
+
+        // Nhận dữ liệu từ server
+        Object obj = service.requestData("B22DCCN222", "uucNOP2h");
+        String dataStr = obj.toString().trim();
+        System.out.println("Received: " + dataStr);
+
+        // Tách và chuyển sang int[]
+        String[] parts = dataStr.trim().split("\\s+|,");
+        List<Integer> list = new ArrayList<>();
+        for (String p : parts) {
+            p = p.trim();
+            if (!p.isEmpty()) list.add(Integer.parseInt(p));
+        }
+        int[] arr = list.stream().mapToInt(Integer::intValue).toArray();
+
+        // Sinh tổ hợp kế tiếp
+        nextPermutation(arr);
+
+        // Ghép lại thành chuỗi kết quả
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < arr.length; i++) {
+            sb.append(arr[i]);
+            if (i < arr.length - 1) sb.append(",");
+        }
+
+        // Gửi lại kết quả
+        service.submitData("B22DCCN222", "uucNOP2h", sb.toString());
+        System.out.println("Done: " + sb);
+    }
+
+    public static void nextPermutation(int[] a) {
+        int n = a.length, i = n - 2;
+        while (i >= 0 && a[i] >= a[i + 1]) i--;
+        if (i >= 0) {
+            int j = n - 1;
+            while (a[j] <= a[i]) j--;
+            swap(a, i, j);
+        }
+        reverse(a, i + 1, n - 1);
+    }
+
+    public static void swap(int[] a, int i, int j) {
+        int t = a[i];
+        a[i] = a[j];
+        a[j] = t;
+    }
+
+    public static void reverse(int[] a, int l, int r) {
+        while (l < r) swap(a, l++, r--);
+    }
+}
+
+interface DataService extends Remote {
+    Object requestData(String studentCode, String qCode) throws RemoteException;
+    void submitData(String studentCode, String qCode, Object data) throws RemoteException;
+}
+
+
+=============================================================================
+
+=============================================================================
+
+=============================================================================
+
+=============================================================================
+
+=============================================================================
+
+=============================================================================
+
+=============================================================================
+
+
+
+

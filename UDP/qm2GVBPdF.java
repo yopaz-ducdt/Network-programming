@@ -48,18 +48,18 @@ public class qm2GVBPdF {
     }
     
     private static double tangluong(double salary, String date) {
-        int year = Integer.parseInt(date.substring(0, 4));
-        char[] nums = String.valueOf(year).toCharArray();
         int sum = 0;
-        for (char c : nums) {
-            sum += (c - '0');
+        String year = date.substring(0, 4);
+        char[] nums = year.toCharArray();
+        for (char s : nums) {
+            sum += (s - '0');
         }
         return salary * (1 + sum / 100.0);
     }
     
     private static String doingay(String date) {
-        String[] tmp = date.split("-");
-        return tmp[2] + "/" + tmp[1] + "/" + tmp[0];
+        String[] parts = date.split("-", 3);
+        return parts[2] + "/" + parts[1] + "/" + parts[0];
     }
 }
 
@@ -68,12 +68,10 @@ class Employee implements Serializable {
     String id, name, hireDate;
     double salary;
 
-    public Employee(String id, String name,  double salary, String hireDate) {
+    public Employee(String id, String name, double salary, String hireDate) {
         this.id = id;
         this.name = name;
-        this.salary = salary;
         this.hireDate = hireDate;
+        this.salary = salary;
     }
-    
-    
 }

@@ -15,23 +15,22 @@ public class q97L7WP1p {
         DatagramPacket pk = new DatagramPacket(buf, buf.length);
         socket.receive(pk);
         String line = new String(pk.getData(), 0, pk.getLength());
-        
+               
         String[] parts = line.split(";", 2);
         String requestId = parts[0];
-        String nums[] = parts[1].split(",");
+        String[] nums = parts[1].split(",");
         
         int max = Integer.MIN_VALUE;
         int min = Integer.MAX_VALUE;
         
-        for (String num : nums) {
-            int s = Integer.parseInt(num);
-            if (s > max) max = s;
-            if (s < min) min = s;
+        for (String s : nums) {
+            int v = Integer.parseInt(s);
+            if (v > max) max = v;
+            if (v < min) min = v;
         }
         
         String res = requestId + ";" + max + "," + min;
-        socket.send(new DatagramPacket(res.getBytes(), res.getBytes().length, addr, port));
-        
+        socket.send(new  DatagramPacket(res.getBytes(), res.getBytes().length, addr, port));
         socket.close();
     }
 }
